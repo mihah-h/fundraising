@@ -17,7 +17,7 @@ export const Header: React.FC<Props> = ({className}) => {
 
                 </div>
                 <LoginButton
-                    botUsername={process.env.BOT_USERNAME}
+                    botUsername="@TestNextMiniAppBot"
                     authCallbackUrl="/path/to/callback/url"
                     buttonSize="large" // "large" | "medium" | "small"
                     cornerRadius={5} // 0 - 20
