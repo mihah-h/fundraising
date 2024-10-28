@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react';
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui';
+
+
+
 
 const mockGroups = ['Группа 1', 'Группа 2', 'Группа 3'];
 export default function Home() {
