@@ -18,11 +18,11 @@ export const Header: React.FC<Props> = ({className}) => {
                 </div>
                 <LoginButton
                     botUsername="TestNextMiniAppBot"
-                    authCallbackUrl="/path/to/callback/url"
-                    buttonSize="large" // "large" | "medium" | "small"
+                    onAuthCallback={(data) => console.log(data)}
+                    buttonSize="medium" // "large" | "medium" | "small"
                     cornerRadius={5} // 0 - 20
                     showAvatar={true} // true | false
-                    lang="en"
+                    lang="ru"
                 />
             </Container>
         </header>
