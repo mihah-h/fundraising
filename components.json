@@ -1,4 +1,4 @@
-{
+next build && next export{
   "$schema": "https://ui.shadcn.com/schema.json",
   "style": "default",
   "rsc": true,
