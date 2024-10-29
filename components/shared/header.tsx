@@ -19,7 +19,7 @@ export const Header: React.FC<Props> = ({className}) => {
                 <LoginButton
                     botUsername="TestNextMiniAppBot"
                     onAuthCallback={(data) => console.log(data)}
-                    buttonSize="medium" // "large" | "medium" | "small"
+                    buttonSize="large" // "large" | "medium" | "small"
                     cornerRadius={5} // 0 - 20
                     showAvatar={true} // true | false
                     lang="ru"
