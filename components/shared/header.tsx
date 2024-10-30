@@ -9,6 +9,27 @@ interface Props {
     className?: string;
 }
 
+const mockHandler = async (data): Promise<{ access:  string,
+    refresh: string}> => {
+    console.log(data)
+    const jsonData = {
+        access:  "access-token",
+        refresh: "refresh-token"
+    }
+    // Моковый запрос на сервер
+    return await new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(jsonData);
+        }, 1000);
+    });
+};
+
+const setLocalStorage = (token: { access:  string,
+    refresh: string}) => {
+    localStorage.setItem('access', token.access)
+    localStorage.setItem('refresh', token.refresh)
+}
+
 export const Header: React.FC<Props> = ({className}) => {
     return (
         <header className={cn('border border-b', className)}>
@@ -18,7 +39,7 @@ export const Header: React.FC<Props> = ({className}) => {
                 </div>
                 <LoginButton
                     botUsername="TestNextMiniAppBot"
-                    onAuthCallback={(data) => console.log(data)}
+                    onAuthCallback={(data) => mockHandler(data).then((token) => setLocalStorage(token))}
                     buttonSize="large" // "large" | "medium" | "small"
                     cornerRadius={5} // 0 - 20
                     showAvatar={true} // true | false
