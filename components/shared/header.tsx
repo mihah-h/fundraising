@@ -3,13 +3,13 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 import { Container } from '@/components/shared';
-import { LoginButton } from '@telegram-auth/react';
+import { LoginButton, TelegramAuthData } from '@telegram-auth/react';
 
 interface Props {
     className?: string;
 }
 
-const mockHandler = async (data): Promise<{ access:  string,
+const mockHandler = async (data: TelegramAuthData): Promise<{ access:  string,
     refresh: string}> => {
     console.log(data)
     const jsonData = {
