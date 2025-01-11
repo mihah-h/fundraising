@@ -56,12 +56,12 @@ export const Header: React.FC<Props> = ({className}) => {
                     botUsername="TestNextMiniAppBot"
                     onAuthCallback={(user) => {
                         fetch("https://assembly.lamart.site/api/users/telegram-auth?" + new URLSearchParams(user))
-                            .then( (date) => {
-                                // const data = await response.json();
+                            .then( (response) => {
+                                const data = await response.json();
                                 // localStorage.setItem('accessToken', data.access);
                                 // localStorage.setItem('refreshToken', data.refresh);
-                                console.log(data)
-                                router.push('/groups-list').then(() => console.log('ok'))
+                                console.log(data);
+                                router.push('/groups-list')
                             })
                         console.log('Hello, user!', user);
                     }}
