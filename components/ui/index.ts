@@ -3,4 +3,7 @@ export { Select } from './select';
 export { Input } from './input'
 export { Card } from './card'
 export { Textarea } from './textarea'
-
+export { Avatar } from './avatar'
+export { Calendar } from './calendar'
+export { Popover } from './popover'
+export { Label } from './label'

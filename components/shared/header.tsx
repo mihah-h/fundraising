@@ -4,10 +4,14 @@ import { cn } from '@/lib/utils';
 import React from 'react';
 import { Container } from '@/components/shared';
 import { LoginButton, TelegramAuthData } from '@telegram-auth/react';
+import Link from 'next/link';
+import useAuth from '@/shared/hooks/useAuth';
+import { useRouter } from 'next/navigation'
 
 interface Props {
     className?: string;
 }
+
 
 // const mockHandler = async (data: TelegramAuthData): Promise<{ access:  string,
 //     refresh: string}> => {
@@ -36,20 +40,28 @@ interface Props {
 // }
 
 export const Header: React.FC<Props> = ({className}) => {
+    // const { accessToken } = useAuth();
+    const router = useRouter()
+
     return (
         <header className={cn('bg-neutral-900 border fixed top-0 left-0 w-full h-14 z-50', className)}>
             <Container className='flex items-center justify-between py-3'>
-                <div>
-                </div>
+                <Link
+                    className="text-2xl font-bold"
+                    href="/groups-list"
+                >
+                    Fundraising
+                </Link>
                 <LoginButton
                     botUsername="TestNextMiniAppBot"
                     onAuthCallback={(user) => {
                         fetch("https://assembly.lamart.site/api/users/telegram-auth?" + new URLSearchParams(user))
-                            .then( () => {
+                            .then( (date) => {
                                 // const data = await response.json();
                                 // localStorage.setItem('accessToken', data.access);
                                 // localStorage.setItem('refreshToken', data.refresh);
-                                // console.log(data)
+                                console.log(data)
+                                router.push('/groups-list').then(() => console.log('ok'))
                             })
                         console.log('Hello, user!', user);
                     }}

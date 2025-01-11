@@ -1,18 +1,18 @@
 'use client'
 
 import React from 'react';
+import { Pie } from "react-chartjs-2";
 import {
     Chart as ChartJS,
     Tooltip,
     Legend,
     ArcElement,
 } from "chart.js";
-import { Pie } from "react-chartjs-2";
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = ({ collectedAmount, targetAmount, size = 'm' }) => {
+export default function PieChart ({ collectedAmount, targetAmount, size = 'm' }) {
     const percentage = ((collectedAmount / targetAmount) * 100).toFixed(0);
 
     const data = {
@@ -62,5 +62,3 @@ const PieChart = ({ collectedAmount, targetAmount, size = 'm' }) => {
         </div>
     );
 };
-
-export default PieChart;
