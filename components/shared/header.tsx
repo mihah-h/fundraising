@@ -57,7 +57,7 @@ export const Header: React.FC<Props> = ({className}) => {
                         fetch("https://assembly.lamart.site/api/users/telegram-auth?" + new URLSearchParams(user))
                             .then( async (response) => {
                                 const data = await response.json();
-                                // localStorage.setItem('accessToken', data.access);
+                                localStorage.setItem('accessToken', data.access);
                                 // localStorage.setItem('refreshToken', data.refresh);
                                 console.log(data)
                                 router.push('/groups-list');
