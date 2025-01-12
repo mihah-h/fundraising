@@ -2,8 +2,8 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
     output: 'standalone',
-    basePath: '/admin',
-    assetPrefix: '/admin/',
+    // basePath: '/admin',
+    // assetPrefix: '/admin/',
     eslint: {
         // Предупреждение: Это позволяет завершить сборки в продакшене, даже если
         // в вашем проекте есть ошибки ESLint.
