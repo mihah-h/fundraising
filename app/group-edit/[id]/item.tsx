@@ -1,33 +1,52 @@
 'use client'
 
 import * as React from "react"
-import { format } from "date-fns"
-import { CalendarIcon, ChevronLeft, MoreVertical } from "lucide-react"
-import { Button, Input, Label, Textarea } from '@/components/ui';
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { ChevronLeft } from "lucide-react"
+import { Button, Input, Label, Popover, Textarea } from '@/components/ui';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { groups } from '../groups-list/page'
 import useAuth from '@/shared/hooks/useAuth';
+import { GroupType } from '@/shared/models/group-type';
+import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import Loader from '@/components/shared/loader';
+import { useRouter } from 'next/navigation';
 
 
-export default function GroupCreation() {
+export default function GroupEdit({id}) {
+    const { accessToken } = useAuth()
     const router = useRouter();
-
-    const { accessToken } = useAuth();
 
     const [avatar, setAvatar] = useState('https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg');
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
 
-    const handleCreate = async (e) => {
+    useEffect(() => {
+        if (id) {
+            const fetchData = async () => {
+                try {
+                    const response = await fetch(`https://assembly.lamart.site/api/cash-collections/groups/${id}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json() as GroupType;
+                    setAvatar(data.image);
+                    setName(data.name);
+                    setDescription(data.description);
+                    console.log(data)
+                } catch (error) {
+                    console.log('err');
+                }
+            };
+
+            fetchData();
+        }
+    }, []);
+
+    const handleEdit = async (e) => {
         e.preventDefault();
 
         try {
@@ -35,11 +54,11 @@ export default function GroupCreation() {
                 name: name,
                 description: description,
                 info: '-',
-                image: avatar,
+                image: avatar || 'https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg',
             };
 
-            const response = await fetch('https://assembly.lamart.site/api/cash-collections/groups/', {
-                method: 'POST',
+            const response = await fetch(`https://assembly.lamart.site/api/cash-collections/groups/${id}/`, {
+                method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'application/json'
@@ -47,38 +66,32 @@ export default function GroupCreation() {
                 body: JSON.stringify(collectionObject),
             });
 
-            setAvatar('https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg');
-            setName('');
-            setDescription('');
-
             console.log(response);
 
-            router.push('/groups-list')
+            router.push('/group/' + id)
         } catch (err) {
 
         }
     };
 
-    // const handleCreate = () => {
-    //     const collectionObject = {
-    //         name: name,
-    //         description: description,
-    //         info: '',
-    //         image: '',
-    //     };
-    //     console.log('Созданный объект группы:', collectionObject);
-    //     router.push('/groups-list')
-    // };
+    if (!name) {
+        return (
+            <div
+                className="container mx-auto max-w-screen-md rounded-md my-6
+                 py-10 px-16 bg-neutral-900 border bg-card text-card-foreground shadow-sm h-36">
+                <Loader/>
+            </div>
+        );}
 
     return (
         <div
             className="container mx-auto max-w-screen-md rounded my-6 py-10 px-16 bg-neutral-900 border bg-card text-card-foreground shadow-sm">
-            <Link href="/groups-list">
+            <Link href={'/group/'+ id}>
                 <Button variant="link" className="mb-6 pl-0">
-                    <ChevronLeft/> Назад
+                    <ChevronLeft /> Назад
                 </Button>
             </Link>
-            <h1 className="text-xl font-semibold mb-8">Создание группы</h1>
+            <h1 className="text-xl font-semibold mb-8">Редактирование группы</h1>
             <div className="flex justify-center mb-6">
                 <label className="cursor-pointer">
                     <Popover>
@@ -127,9 +140,11 @@ export default function GroupCreation() {
             </div>
 
             <div className="flex justify-end mt-10">
-                <Button onClick={handleCreate} size="lg">
-                    Создать
-                </Button>
+                <Link href="/group">
+                    <Button onClick={handleEdit} size="lg">
+                        Сохранить
+                    </Button>
+                </Link>
             </div>
         </div>
     );

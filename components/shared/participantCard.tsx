@@ -1,23 +1,28 @@
 'use client'
 
 import React from 'react';
-import { Button, Popover } from '@/components/ui';
+import { Avatar, Button, Popover } from '@/components/ui';
 import { MoreVertical } from 'lucide-react';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export default function ParticipantCard ({ avatar, name, gmail }) {
+export default function ParticipantCard ({ avatar, name, email }) {
 
     return (
         <div className="flex flex-row justify-between items-center hover:bg-neutral-700 rounded-md p-3 cursor-pointer">
-            <img
-                src={avatar}
-                alt="аватар юзера"
-                className="w-16 h-16 rounded-full border-2 border-gray-300 mr-5"
-            />
+            <Avatar
+                className="w-16 h-16 mr-4"
+            >
+                <AvatarImage
+                    src={avatar || 'https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg'}
+                    alt="@shadcn"
+                />
+                <AvatarFallback className="bg-blue-400"></AvatarFallback>
+            </Avatar>
             <div className="flex flex-row justify-between items-center w-full">
                 <div>
                     <p className="text-lg font-semibold">{name}</p>
-                    <p className="text-gray-500 text-sm">{gmail}</p>
+                    {/*<p className="text-gray-500 text-sm">{email}</p>*/}
                 </div>
                 <Popover>
                     <PopoverTrigger asChild>

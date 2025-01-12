@@ -40,7 +40,6 @@ interface Props {
 // }
 
 export const Header: React.FC<Props> = ({className}) => {
-    // const { accessToken } = useAuth();
     const router = useRouter()
 
     return (
@@ -53,15 +52,15 @@ export const Header: React.FC<Props> = ({className}) => {
                     Fundraising
                 </Link>
                 <LoginButton
-                    botUsername="TestNextMiniAppBot"
+                    botUsername="AssemblySolutionsBot"
                     onAuthCallback={(user) => {
                         fetch("https://assembly.lamart.site/api/users/telegram-auth?" + new URLSearchParams(user))
-                            .then( (response) => {
+                            .then( async (response) => {
                                 const data = await response.json();
-                                // localStorage.setItem('accessToken', data.access);
+                                localStorage.setItem('accessToken', data.access);
                                 // localStorage.setItem('refreshToken', data.refresh);
-                                console.log(data);
-                                router.push('/groups-list')
+                                console.log(data)
+                                router.push('/groups-list');
                             })
                         console.log('Hello, user!', user);
                     }}

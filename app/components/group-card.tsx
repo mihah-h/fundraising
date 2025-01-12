@@ -2,25 +2,33 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 export default function GroupCard ({ id, avatar, name, participantCount, date }) {
     return (
         <Link
             className="flex flex-row justify-between items-center hover:bg-neutral-700 rounded-md p-3 cursor-pointer"
-            href="/group"
+            href={'/group/' + id}
         >
-            <img
-                className="w-16 h-16 rounded-full border-2 border-gray-300 hover:border-blue-500 mr-5"
-                src={ avatar }
-                alt="Логотип сбора"
-            />
+            <Avatar
+                className="w-16 h-16 mr-4"
+            >
+                <AvatarImage
+                    src={avatar || undefined}
+                    alt="@shadcn"
+                />
+                <AvatarFallback className="bg-blue-400"></AvatarFallback>
+            </Avatar>
             <div className="flex flex-row justify-between items-center w-full">
                 <div>
                     <p className="text-lg font-semibold">{ name }</p>
-                    <p className="text-gray-500 text-sm">{ participantCount } участника</p>
+                    <p className="text-gray-500 text-sm">
+                        { participantCount ?? 0 }
+                        {participantCount === 1 ? ' участник' : participantCount === 2 || participantCount === 3 || participantCount === 4 ? ' участника' : ' участников' }
+                    </p>
                 </div>
                 <div className="flex items-center">
-                    <span className="text-xs text-neutral-500">{ date }</span>
+                    <span className="text-xs text-neutral-500">{ new Date(date).toLocaleDateString() }</span>
                 </div>
             </div>
         </Link>
