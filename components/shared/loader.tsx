@@ -6,7 +6,7 @@ import { Button, Popover } from '@/components/ui';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { MoreVertical } from 'lucide-react';
 
-export default function Loader ({ avatar, name, gmail }) {
+export default function Loader () {
 
     return (
         <svg

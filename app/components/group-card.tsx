@@ -4,7 +4,15 @@ import React from 'react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export default function GroupCard ({ id, avatar, name, participantCount, date }) {
+interface GroupCardProps {
+    id: string; // или другой тип, в зависимости от ваших данных
+    avatar: string; // или другой тип
+    name: string; // или другой тип
+    participantCount: number; // или другой тип
+    date: string; // или другой тип
+}
+
+export default function GroupCard ({ id, avatar, name, participantCount, date }: GroupCardProps) {
     return (
         <Link
             className="flex flex-row justify-between items-center hover:bg-neutral-700 rounded-md p-3 cursor-pointer"

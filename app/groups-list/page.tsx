@@ -15,20 +15,20 @@ import useAuth from '@/shared/hooks/useAuth';
 import { GroupType } from '@/shared/models/group-type';
 import Loader from '@/components/shared/loader';
 
-export const groups: GroupCardType[] = [
-    {
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-        name: "9А",
-        date: new Date("2025-01-10"),
-        participantCount: 3,
-    },
-    {
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-        name: "7Б",
-        date: new Date("2025-01-11"),
-        participantCount: 2,
-    },
-];
+// export const groups: GroupCardType[] = [
+//     {
+//         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
+//         name: "9А",
+//         date: new Date("2025-01-10"),
+//         participantCount: 3,
+//     },
+//     {
+//         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
+//         name: "7Б",
+//         date: new Date("2025-01-11"),
+//         participantCount: 2,
+//     },
+// ];
 export default function GroupList() {
     const { accessToken } = useAuth();
 

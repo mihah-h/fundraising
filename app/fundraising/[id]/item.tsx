@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Button, Popover } from '@/components/ui';
@@ -23,7 +23,7 @@ import ParticipantCard from '@/components/shared/participantCard';
 import { Participant } from '@/shared/models/participant';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import FundraisingCard from '@/app/group/components/fundraising-card';
-import { Fundraising } from '@/shared/models/fundraising';
+import type { Fundraising } from '@/shared/models/fundraising'; // Измените здесь
 import FundsHistoryElement from '@/app/fundraising/componets/funds-history-element';
 import useAuth from '@/shared/hooks/useAuth';
 import { GroupType } from '@/shared/models/group-type';
@@ -33,12 +33,12 @@ import { useRouter } from 'next/navigation';
 import {
     Dialog,
     DialogContent,
-    DialogDescription, DialogFooter,
+    DialogDescription,
+    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
-
 const fundraising: Fundraising = {
     id: 1,
     name: "8 марта",
@@ -76,7 +76,7 @@ export default function Fundraising({id}) {
     const { accessToken } = useAuth();
     const router = useRouter();
 
-    const [fundraising, setFundraising] = useState<FundraisingType>(null);
+    const [fundraising, setFundraising] = useState<FundraisingType | null>(null);
 
     useEffect(() => {
         if (id) {

@@ -6,7 +6,7 @@ import { MoreVertical } from 'lucide-react';
 import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
-export default function ParticipantCard ({ avatar, name, email }) {
+export default function ParticipantCard ({ avatar, name }) {
 
     return (
         <div className="flex flex-row justify-between items-center hover:bg-neutral-700 rounded-md p-3 cursor-pointer">

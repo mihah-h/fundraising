@@ -16,8 +16,11 @@ import Link from 'next/link';
 import useAuth from '@/shared/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 
+interface FundraisingCreationProps {
+    id: string; // Укажите тип для id
+}
 
-export default function FundraisingCreation({id}) {
+export default function FundraisingCreation({ id }: FundraisingCreationProps) {
     const { accessToken } = useAuth();
 
     const router = useRouter();
