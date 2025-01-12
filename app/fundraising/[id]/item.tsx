@@ -215,7 +215,7 @@ export default function Fundraising({id}) {
                         <div>
                             <p
                                 onClick={handleCopy}
-                                className="text-l hover:underline"
+                                className="text-l hover:underline cursor-pointer"
                             >
                                 {'https://t.me/localCutterrorBot?startapp=payment-' + fundraising.uuid}
                             </p>
