@@ -15,20 +15,7 @@ import useAuth from '@/shared/hooks/useAuth';
 import { GroupType } from '@/shared/models/group-type';
 import Loader from '@/components/shared/loader';
 
-// export const groups: GroupCardType[] = [
-//     {
-//         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-//         name: "9А",
-//         date: new Date("2025-01-10"),
-//         participantCount: 3,
-//     },
-//     {
-//         avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-//         name: "7Б",
-//         date: new Date("2025-01-11"),
-//         participantCount: 2,
-//     },
-// ];
+
 export default function GroupList() {
     const { accessToken } = useAuth();
 
@@ -38,6 +25,8 @@ export default function GroupList() {
 
     useEffect(() => {
         const fetchData = async () => {
+            if (!accessToken) return; // Если токен недоступен, выходим из функции
+
             try {
                 const response = await fetch('https://assembly.lamart.site/api/cash-collections/groups/', {
                     method: 'GET',
@@ -47,16 +36,19 @@ export default function GroupList() {
                     }
                 });
 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const data = await response.json();
                 setGroupsList(data);
-                console.log(data)
             } catch (error) {
-                console.log('err');
+                console.error('Error fetching groups:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [accessToken]);
 
     useEffect(() => {
         if (groupsList) {
@@ -111,7 +103,7 @@ export default function GroupList() {
                     {filteredGroups.map((group, index) => (
                         <GroupCard
                             key={index}
-                            id={group.id}
+                            id={String(group.id)}
                             avatar={group.image}
                             name={group.name}
                             date={group.created_at}

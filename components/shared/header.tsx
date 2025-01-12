@@ -40,6 +40,7 @@ interface Props {
 // }
 
 export const Header: React.FC<Props> = ({className}) => {
+    const { accessToken } = useAuth();
     const router = useRouter()
 
     return (
@@ -47,13 +48,15 @@ export const Header: React.FC<Props> = ({className}) => {
             <Container className='flex items-center justify-between py-3'>
                 <Link
                     className="text-2xl font-bold"
-                    href="/groups-list"
+                    href={accessToken ? '/groups-list' : '/'}
                 >
                     Fundraising
                 </Link>
                 <LoginButton
-                    botUsername="AssemblySolutionsBot"
+                    botUsername="TestNextMiniAppBot"
                     onAuthCallback={(user) => {
+                        user.last_name = user.last_name || "";
+
                         fetch("https://assembly.lamart.site/api/users/telegram-auth?" + new URLSearchParams(user))
                             .then( async (response) => {
                                 const data = await response.json();

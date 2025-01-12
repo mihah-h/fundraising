@@ -21,30 +21,36 @@ export default function GroupEdit({id}) {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        if (id) {
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`https://assembly.lamart.site/api/cash-collections/groups/${id}/`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
+        const fetchData = async () => {
+            if (!accessToken) return; // Проверка наличия accessToken
 
-                    const data = await response.json() as GroupType;
-                    setAvatar(data.image);
-                    setName(data.name);
-                    setDescription(data.description);
-                    console.log(data)
-                } catch (error) {
-                    console.log('err');
+            try {
+                const response = await fetch(`https://assembly.lamart.site/api/cash-collections/groups/${id}/`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            };
 
+                const data = await response.json() as GroupType;
+                setAvatar(data.image);
+                setName(data.name);
+                setDescription(data.description);
+                console.log(data);
+            } catch (error) {
+                console.error('Error fetching group data:', error);
+            }
+        };
+
+        if (id) {
             fetchData();
         }
-    }, []);
+    }, [id, accessToken]);
 
     const handleEdit = async (e) => {
         e.preventDefault();

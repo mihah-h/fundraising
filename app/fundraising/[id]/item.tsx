@@ -39,38 +39,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
-const fundraising: Fundraising = {
-    id: 1,
-    name: "8 марта",
-    target: "Поздравить девочек с 8 марта",
-    description: "Сбор средств на подарок девочкам 7Б на 8 марта",
-    deadline: new Date("2025-03-02"),
-    type: "Закрытый",
-    collectedAmount: 2400,
-    targetAmount: 5000,
-    participants: [
-        {
-            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-            name: 'Владимир Иванов',
-            gmail: 'vova@gmail.com'
-        },
-        {
-            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIyf1cKclYLS3ae0Oqv2Hv69WfUnRVdDzlQ&s',
-            name: 'Сергей Сергеев',
-            gmail: 'ser@gmail.com'
-        }
-    ],
-    fundsHistory: [
-        {
-            participantName: "Владимир Иванов",
-            sum: 1000
-        },
-        {
-            participantName: "Сергей Сергеев",
-            sum: 1400
-        }
-    ]
-};
+
 
 export default function Fundraising({id}) {
     const { accessToken } = useAuth();
@@ -79,55 +48,55 @@ export default function Fundraising({id}) {
     const [fundraising, setFundraising] = useState<FundraisingType | null>(null);
 
     useEffect(() => {
-        if (id) {
-            const fetchData = async () => {
+        const fetchData = async () => {
+            if (id) {
                 try {
                     const response = await fetch(`https://assembly.lamart.site/api/cash-collections/${id}/`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${accessToken}`,
-                            'Content-Type': 'application/json'
-                        }
+                            'Content-Type': 'application/json',
+                        },
                     });
+
+
 
                     const data = await response.json();
                     setFundraising(data);
-                    console.log(fundraising, 'fun')
                 } catch (error) {
-                    console.log('err');
+                    console.error('Error fetching fundraising data:', error);
                 }
-            };
+            }
+        };
 
-            fetchData();
-        }
-    }, []);
+        fetchData();
+    }, [id, accessToken]);
 
-    const deleteFundraising = async (e) => {
-        // e.preventDefault();
-
+    const deleteFundraising = async () => {
         try {
             const response = await fetch(`https://assembly.lamart.site/api/cash-collections/${id}/`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             });
-            router.push('/group/' + fundraising.group)
-            console.log(response)
-        } catch (error) {
-            console.log('err');
-        }
 
-    }
+            if (!response.ok) {
+                throw new Error('Failed to delete fundraising');
+            }
+
+            router.push('/group/' + fundraising.group);
+        } catch (error) {
+            console.error('Error deleting fundraising:', error);
+        }
+    };
 
     const handleCopy = () => {
-        const textToCopy = 'https://t.me/localCutterrorBot?startapp=payment-' + fundraising.uuid;
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            // alert('Ссылка скопирована');
-        }).catch(err => {
-            console.error('Ошибка при копировании текста: ', err);
-        });
+        const textToCopy = `https://t.me/localCutterrorBot?startapp=payment-${fundraising?.uuid}`;
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => console.log('Ссылка скопирована'))
+            .catch(err => console.error('Ошибка при копировании текста:', err));
     };
 
     if (!fundraising) {
@@ -145,26 +114,27 @@ export default function Fundraising({id}) {
                 <div className="flex justify-between w-full mb-4">
                     <Link href={'/group/' + fundraising.group}>
                         <Button variant="link" className="pl-0">
-                            <ChevronLeft /> Назад
+                            <ChevronLeft/> Назад
                         </Button>
                     </Link>
                     <div>
                         <Link href={'/fundraising-edit/' + id}>
                             <Button variant="ghost" size="icon" className="mr-1.5">
-                                <Edit2 />
+                                <Edit2/>
                             </Button>
                         </Link>
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button variant="ghost" size="icon">
-                                    <MoreVertical />
+                                    <MoreVertical/>
                                 </Button>
                             </PopoverTrigger>
                             <PopoverContent className="flex flex-col w-full">
                                 <Button className="pl-3 justify-start" variant="ghost">
                                     Изменить тип сбора
                                 </Button>
-                                <Button onClick={deleteFundraising} className="pl-3 justify-start text-red-500 hover:text-red-500" variant="ghost">
+                                <Button onClick={deleteFundraising}
+                                        className="pl-3 justify-start text-red-500 hover:text-red-500" variant="ghost">
                                     Удалить сбор
                                 </Button>
                             </PopoverContent>
@@ -183,35 +153,35 @@ export default function Fundraising({id}) {
                 </div>
                 <ul className="w-full mb-10">
                     <li className="flex items-center gap-3">
-                        <Target className="w-7 h-7 text-gray-500" />
+                        <Target className="w-7 h-7 text-gray-500"/>
                         <div>
                             <p className="text-l">{fundraising.goal}</p>
                             <p className="text-gray-500 text-sm">Цель</p>
                         </div>
                     </li>
                     <li className="flex items-center mt-4 gap-3">
-                        <BookOpen className="w-7 h-7 text-gray-500" />
+                        <BookOpen className="w-7 h-7 text-gray-500"/>
                         <div>
                             <p className="text-l">{fundraising.description}</p>
                             <p className="text-gray-500 text-sm">Описание</p>
                         </div>
                     </li>
                     <li className="flex items-center mt-4 gap-3">
-                        <CalendarCheck className="w-7 h-7 text-gray-500" />
+                        <CalendarCheck className="w-7 h-7 text-gray-500"/>
                         <div>
                             <p className="text-l">{new Date(fundraising.created_at).toLocaleDateString()}</p>
                             <p className="text-gray-500 text-sm">Дата создания</p>
                         </div>
                     </li>
                     <li className="flex items-center mt-4 gap-3">
-                        <LockIcon className="w-7 h-7 text-gray-500" />
+                        <LockIcon className="w-7 h-7 text-gray-500"/>
                         <div>
                             <p className="text-l">Закрытый</p>
                             <p className="text-gray-500 text-sm">Тип сбора</p>
                         </div>
                     </li>
                     <li className="flex items-center gap-3">
-                        <Link2 className="w-7 h-7 text-gray-500" />
+                        <Link2 className="w-7 h-7 text-gray-500"/>
                         <div>
                             <p
                                 onClick={handleCopy}
@@ -226,29 +196,34 @@ export default function Fundraising({id}) {
 
                 <h3 className="text-xl font-bold mb-6">Собрано средств</h3>
                 <div className="flex flex-col items-center mb-10">
-                    <PieChart collectedAmount={fundraising.current_amount} targetAmount={fundraising.required_amount} size={'m'} />
+                    <PieChart collectedAmount={fundraising.current_amount} targetAmount={fundraising.required_amount}
+                              size={'m'}/>
                 </div>
 
                 <h3 className="text-xl font-bold mb-6">Участники</h3>
                 <div className="flex flex-col gap-1 bg-neutral-900 p-2 mb-10">
-                    {fundraising.participant_set.map((participant, index) => (
-                        <ParticipantCard
-                            key={index}
-                            avatar={participant.image}
-                            name={participant.username}
-                        />
-                    ))}
+                    {fundraising.participant_set && fundraising.participant_set.length > 0 && (
+                        fundraising.participant_set.map((participant, index) => (
+                            <ParticipantCard
+                                key={index}
+                                avatar={participant.image}
+                                name={participant.username}
+                            />
+                        ))
+                    )}
                 </div>
 
                 <h3 className="text-xl font-bold mb-6">История движения средств</h3>
                 <div className="flex flex-col gap-4 w-full mb-16">
-                    {fundraising.participant_set.map((fundsHistoryElement, index) => (
-                        <FundsHistoryElement
-                            key={index}
-                            participantName={fundsHistoryElement.username}
-                            sum={fundsHistoryElement.amount}
-                        />
-                    ))}
+                    {fundraising.participant_set && fundraising.participant_set.length > 0 && (
+                        fundraising.participant_set.map((fundsHistoryElement, index) => (
+                            <FundsHistoryElement
+                                key={index}
+                                participantName={fundsHistoryElement.username}
+                                sum={fundsHistoryElement.amount}
+                            />
+                        ))
+                    )}
                 </div>
 
                 {/*<Button variant="secondary">Завершить сбор</Button>*/}

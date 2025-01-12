@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
 
 export default function useAuth() {
-
-    const [accessToken, setAccessToken] = useState(null); // Изначально устанавливаем в null
+    const [accessToken, setAccessToken] = useState('');
 
     useEffect(() => {
-        // Проверяем, доступен ли window (т.е. мы находимся в браузере)
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem('accessToken');
-            setAccessToken(token); // Устанавливаем токен из localStorage
-        }
-    }, []); // Пустой массив зависимостей, чтобы выполнить только один раз при монтировании
+            setAccessToken(token);
+            console.log(accessToken, 'tokenn')
 
+        }
+    }, []); // Пустой массив зависимостей, чтобы выполнить эффект только один раз
     return { accessToken };
 }

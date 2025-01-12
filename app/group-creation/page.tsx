@@ -1,26 +1,16 @@
-'use client'
+'use client';
 
-import * as React from "react"
-import { format } from "date-fns"
-import { CalendarIcon, ChevronLeft, MoreVertical } from "lucide-react"
+import * as React from "react";
+import { ChevronLeft } from "lucide-react";
 import { Button, Input, Label, Textarea } from '@/components/ui';
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import { cn } from '@/lib/utils';
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { groups } from '../groups-list/page'
 import useAuth from '@/shared/hooks/useAuth';
-
 
 export default function GroupCreation() {
     const router = useRouter();
-
     const { accessToken } = useAuth();
 
     const [avatar, setAvatar] = useState('https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg');
@@ -29,6 +19,11 @@ export default function GroupCreation() {
 
     const handleCreate = async (e) => {
         e.preventDefault();
+
+        if (!accessToken) {
+            console.error('Access token is missing');
+            return; // Прекращаем выполнение, если токен отсутствует
+        }
 
         try {
             const collectionObject = {
@@ -47,35 +42,28 @@ export default function GroupCreation() {
                 body: JSON.stringify(collectionObject),
             });
 
+            if (!response.ok) {
+                throw new Error('Failed to create group');
+            }
+
+            // Сброс состояния формы
             setAvatar('https://photogora.ru/img/product/big/17817/62bb11f8bf22c1346029859250147860.jpg');
             setName('');
             setDescription('');
 
-            console.log(response);
+            console.log('Group created successfully', await response.json());
 
-            router.push('/groups-list')
+            router.push('/groups-list');
         } catch (err) {
-
+            console.error('Error creating group:', err);
         }
     };
 
-    // const handleCreate = () => {
-    //     const collectionObject = {
-    //         name: name,
-    //         description: description,
-    //         info: '',
-    //         image: '',
-    //     };
-    //     console.log('Созданный объект группы:', collectionObject);
-    //     router.push('/groups-list')
-    // };
-
     return (
-        <div
-            className="container mx-auto max-w-screen-md rounded my-6 py-10 px-16 bg-neutral-900 border bg-card text-card-foreground shadow-sm">
+        <div className="container mx-auto max-w-screen-md rounded my-6 py-10 px-16 bg-neutral-900 border bg-card text-card-foreground shadow-sm">
             <Link href="/groups-list">
                 <Button variant="link" className="mb-6 pl-0">
-                    <ChevronLeft/> Назад
+                    <ChevronLeft /> Назад
                 </Button>
             </Link>
             <h1 className="text-xl font-semibold mb-8">Создание группы</h1>
@@ -90,17 +78,16 @@ export default function GroupCreation() {
                             />
                         </PopoverTrigger>
                         <PopoverContent className="flex flex-col w-full">
-                            <Label className="mb-2" htmlFor="avatar">Сслыка на картинку</Label>
+                            <Label className="mb-2" htmlFor="avatar">Ссылка на картинку</Label>
                             <Input
                                 type="text"
                                 id="avatar"
                                 placeholder="Введите ссылку на картинку"
                                 value={avatar}
                                 onChange={(e) => setAvatar(e.target.value)}
-                            ></Input>
+                            />
                         </PopoverContent>
                     </Popover>
-                    {/*<input type="file" className="hidden" onChange={(e) => console.log(e.target.files[0])}/>*/}
                 </label>
             </div>
 
